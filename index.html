@@ -1,0 +1,266 @@
+<!-- <author>Adriana Palmito</author> -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Refugio de Animales - Sistema de Gestión ECCI</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <!-- Pantalla de Login/Registro -->
+    <div id="auth-container" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1>🐾 Refugio de Animales</h1>
+                <p>Sistema de Gestión Integral</p>
+            </div>
+
+            <!-- Mensajes -->
+            <div id="auth-message" class="message hidden"></div>
+
+            <!-- Formulario de Login -->
+            <form id="login-form" class="auth-form">
+                <h2>Iniciar Sesión</h2>
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" id="login-username" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Iniciar Sesión</button>
+                <button type="button" class="btn-link" onclick="showRegisterForm()">
+                    ¿No tienes cuenta? Regístrate aquí
+                </button>
+            </form>
+
+            <!-- Formulario de Registro -->
+            <form id="register-form" class="auth-form hidden">
+                <h2>Registrarse</h2>
+                <div class="form-group">
+                    <label>Usuario</label>
+                    <input type="text" id="register-username" required>
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="register-email" required>
+                </div>
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="register-password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Registrarse</button>
+                <button type="button" class="btn-link" onclick="showLoginForm()">
+                    ¿Ya tienes cuenta? Inicia sesión
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Aplicación Principal -->
+    <div id="app-container" class="app-container hidden">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-content">
+                <div>
+                    <h1>🐾 Refugio de Animales</h1>
+                    <p id="user-info"></p>
+                </div>
+                <button onclick="logout()" class="btn btn-danger">
+                    🚪 Cerrar Sesión
+                </button>
+            </div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="app-nav">
+            <button onclick="showView('dashboard')" class="nav-btn active" data-view="dashboard">
+                🏠 Dashboard
+            </button>
+            <button onclick="showView('create')" class="nav-btn" data-view="create" id="nav-create">
+                ➕ Nuevo Animal
+            </button>
+            <button onclick="showView('species')" class="nav-btn" data-view="species" id="nav-species">
+                🦁 Especies
+            </button>
+            <button onclick="showView('adoptions')" class="nav-btn" data-view="adoptions" id="nav-adoptions">
+                ❤️ Adopciones
+            </button>
+            <button onclick="showView('users')" class="nav-btn hidden" data-view="users" id="nav-users">
+                👥 Usuarios
+            </button>
+            <button onclick="showView('activity')" class="nav-btn hidden" data-view="activity" id="nav-activity">
+                📊 Actividad
+            </button>
+        </nav>
+
+        <!-- Mensajes -->
+        <div class="container">
+            <div id="app-message" class="message hidden"></div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <main class="main-content">
+            <!-- Dashboard -->
+            <div id="view-dashboard" class="view active">
+                <div class="container">
+                    <h2>Animales Registrados</h2>
+                    <div class="filters">
+                        <input type="text" id="search-animal" placeholder="Buscar por nombre..." class="search-input">
+                        <select id="filter-species" class="filter-select">
+                            <option value="">Todas las especies</option>
+                        </select>
+                        <select id="filter-status" class="filter-select">
+                            <option value="">Todos los estados</option>
+                            <option value="Disponible">Disponible</option>
+                            <option value="En adopción">En adopción</option>
+                            <option value="Adoptado">Adoptado</option>
+                            <option value="En tratamiento">En tratamiento</option>
+                        </select>
+                    </div>
+                    <div id="animals-grid" class="animals-grid"></div>
+                </div>
+            </div>
+
+            <!-- Crear/Editar Animal -->
+            <div id="view-create" class="view">
+                <div class="container">
+                    <h2 id="form-title">Registrar Nuevo Animal</h2>
+                    <form id="animal-form" class="animal-form">
+                        <input type="hidden" id="animal-id">
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Nombre *</label>
+                                <input type="text" id="animal-nombre" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Especie *</label>
+                                <select id="animal-especie" required>
+                                    <option value="">Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Raza *</label>
+                                <select id="animal-raza" required>
+                                    <option value="">Seleccionar especie primero</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Edad *</label>
+                                <input type="text" id="animal-edad" placeholder="ej: 2 años" required>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Género</label>
+                                <select id="animal-genero">
+                                    <option value="Macho">Macho</option>
+                                    <option value="Hembra">Hembra</option>
+                                    <option value="Desconocido">Desconocido</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Color</label>
+                                <input type="text" id="animal-color" placeholder="ej: Blanco y negro">
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Estado *</label>
+                                <select id="animal-estado" required>
+                                    <option value="Disponible">Disponible</option>
+                                    <option value="En adopción">En adopción</option>
+                                    <option value="Adoptado">Adoptado</option>
+                                    <option value="En tratamiento">En tratamiento</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Estado de Salud *</label>
+                                <select id="animal-salud" required>
+                                    <option value="">Seleccionar</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Descripción</label>
+                            <textarea id="animal-descripcion" rows="4" placeholder="Información adicional sobre el animal..."></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Vacunado</label>
+                            <select id="animal-vacunado">
+                                <option value="Si">Sí</option>
+                                <option value="No">No</option>
+                                <option value="Parcialmente">Parcialmente</option>
+                            </select>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">
+                                💾 Guardar Animal
+                            </button>
+                            <button type="button" onclick="cancelForm()" class="btn btn-secondary">
+                                ❌ Cancelar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Especies y Razas -->
+            <div id="view-species" class="view">
+                <div class="container">
+                    <h2>Gestión de Especies y Razas</h2>
+                    <div id="species-content"></div>
+                </div>
+            </div>
+
+            <!-- Adopciones -->
+            <div id="view-adoptions" class="view">
+                <div class="container">
+                    <h2>Registro de Adopciones</h2>
+                    <div id="adoptions-content"></div>
+                </div>
+            </div>
+
+            <!-- Gestión de Usuarios -->
+            <div id="view-users" class="view">
+                <div class="container">
+                    <h2>Gestión de Usuarios</h2>
+                    <div id="users-table"></div>
+                </div>
+            </div>
+
+            <!-- Registro de Actividad -->
+            <div id="view-activity" class="view">
+                <div class="container">
+                    <h2>Registro de Actividades</h2>
+                    <div id="activity-table"></div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>© 2025 Sistema de Gestión - Refugio de Animales</p>
+            <p>Conectado a Supabase | Adriana Palmito</p>
+        </footer>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/supabase-client.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/animals.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
