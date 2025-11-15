@@ -70,12 +70,6 @@ Luego abre: `http://localhost:8000`
 #### Opción 4: Abrir directamente
 Simplemente abre el archivo `index.html` en tu navegador (puede tener limitaciones con CORS)
 
-## 👤 Usuario por Defecto
-
-- **Usuario:** administrador
-- **Contraseña:** Admin2025
-- **Rol:** Administrador
-
 ## 🔑 Roles y Permisos
 
 ### Administrador
@@ -163,8 +157,8 @@ const ROLES = {
 
 ## 📧 Soporte
 
-Para reportar problemas o sugerencias, contacta al equipo de desarrollo.
+Para reportar problemas o sugerencias, contactame.
 
 ## 📄 Licencia
 
-Este proyecto es de código abierto y está disponible bajo licencia MIT.
+Este proyecto es de código abierto y está disponible bajo licencia LIBRE.
